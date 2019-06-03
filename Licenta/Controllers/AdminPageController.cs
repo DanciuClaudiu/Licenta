@@ -44,5 +44,29 @@ namespace Licenta.Controllers
             return Ok();
         }
 
+        [HttpPost]
+        public ActionResult UpdateInstrument(Instrument instrumentRequest)
+        {
+            var instrument = _context.Instrument.First(s => s.Id == instrumentRequest.Id);
+
+            if (instrument == null || (string.IsNullOrEmpty(instrumentRequest.Name)))
+            {
+                return BadRequest();
+            }
+
+            if (!string.IsNullOrEmpty(instrumentRequest.Name))
+                instrument.Name = instrumentRequest.Name;
+            if (instrumentRequest.Price != 0)
+                instrument.Price = instrumentRequest.Price;
+            if (instrumentRequest.Price != 0)
+                instrument.Quantity = instrumentRequest.Quantity;
+            if (!string.IsNullOrEmpty(instrumentRequest.Type))
+                instrument.Type = instrumentRequest.Type;
+
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
     }
 }

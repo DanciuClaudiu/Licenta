@@ -22,24 +22,36 @@
                 
                 <div class="admin-item-details">
                     <div>
-                        Id: @instrument.Id
+                        <label>Id: @instrument.Id</label>
                     </div>
+
                     <div>
-                        Name: @instrument.Name
+                        <label>Name: @instrument.Name</label>
+                        <input type="text" id="updateName @instrument.Id" style="visibility: hidden"/>
+                        
                     </div>
+                    
                     <div>
-                        Price: $@instrument.Price
+                        <label>Price: $@instrument.Price</label>
+                        <input type="text" id="updatePrice @instrument.Id" style="visibility: hidden" />
                     </div>
+
                     <div>
-                        Quantity: @instrument.Quantity
+                        <label>Quantity: @instrument.Quantity</label>
+                        <input type="text" id="updateQuantity @instrument.Id" style="visibility: hidden" />
                     </div>
+                    
                     <div style="margin-bottom: 3%">
-                        Type: @instrument.Type
+                        <label>Type: @instrument.Type</label>
+                        <input type="text" id="updateType @instrument.Id" style="visibility: hidden" />
                     </div>
+                    
                     <div>
                         <input type="button" id="@instrument.Id" onclick="deleteInstrument(this.id)" value="Remove" class="item-button-remove" style="margin-bottom: 5%; " />
-                        <input type="button" value="Edit" class="item-button" style="margin-left: 10px" />
+                        <input type="button" value="Edit" id="edit @instrument.Id" onclick="reveal(this.id)" class="item-button" style="margin-left: 10px" />
+                        <input type="button" value="Confirm" id="confirm @instrument.Id" onclick="updateInstrument(this.id)" class="item-button" style="margin-left: 10px; visibility: hidden;" />
                     </div>
+
                 </div>
 
             </div>
@@ -70,14 +82,91 @@
         function deleteInstrument(id) {
             var parameters = {
                 id: id
-        };
-        console.log(parameters);
-        $.post("@Url.Action("DeleteInstrument", "AdminPage")", parameters)
+            };
+            
+            $.post("@Url.Action("DeleteInstrument", "AdminPage")", parameters)
             .done(function () {
                 console.log('post done');
                 location.reload();
             });
-    }
+        }
+
+
+        function reveal(id) {
+            id = id.replace(/edit /g, '');
+            var nameId = "updateName " + id;
+            var priceId = "updatePrice " + id;
+            var quantityId = "updateQuantity " + id;
+            var typeId = "updateType " + id;
+            var buttonId = "confirm " + id;
+            var editId = "edit " + id;
+
+            if (document.getElementById(nameId).style.visibility === 'hidden') {
+                document.getElementById(nameId).style.visibility = 'visible';
+            } else {
+                document.getElementById(nameId).style.visibility = 'hidden';
+            }
+            if (document.getElementById(priceId).style.visibility === 'hidden') {
+                document.getElementById(priceId).style.visibility = 'visible';
+            } else {
+                document.getElementById(priceId).style.visibility = 'hidden';
+            }
+            if (document.getElementById(quantityId).style.visibility === 'hidden') {
+                document.getElementById(quantityId).style.visibility = 'visible';
+            } else {
+                document.getElementById(quantityId).style.visibility = 'hidden';
+            }
+            if (document.getElementById(typeId).style.visibility === 'hidden') {
+                document.getElementById(typeId).style.visibility = 'visible';
+            } else {
+                document.getElementById(typeId).style.visibility = 'hidden';
+            }
+            if (document.getElementById(buttonId).style.visibility === 'hidden') {
+                document.getElementById(buttonId).style.visibility = 'visible';
+            } else {
+                document.getElementById(buttonId).style.visibility = 'hidden';
+            }
+
+            if (document.getElementById(editId).value === 'Edit') {
+                document.getElementById(editId).value = 'Cancel Edit';
+                document.getElementById(editId).className = "item-button-remove"
+            } else {
+                document.getElementById(editId).value = 'Edit';
+                document.getElementById(editId).className = "item-button"
+            }
+
+        }
+
+
+        function updateInstrument(id) {
+            id = id.replace(/confirm /g, '');
+            
+            var nameId = "updateName " + id;
+            var priceId = "updatePrice " + id;
+            var quantityId = "updateQuantity " + id;
+            var typeId = "updateType " + id;
+
+            console.log(nameId, priceId, quantityId,typeId);
+
+            var name = document.getElementById(nameId).value;
+            var price = document.getElementById(priceId).value;
+            var quantity = document.getElementById(quantityId).value;
+            var type = document.getElementById(typeId).value;
+
+            var parameters = {
+                id : id,
+                name: name,
+                price: price,
+                quantity: quantity,
+                type: type
+            };
+            console.log(parameters);
+            $.post("@Url.Action("UpdateInstrument", "AdminPage")", parameters)
+                .done(function () {
+                    console.log('post done');
+                    location.reload();
+                });
+        }
 
     </script>
 
