@@ -4,11 +4,11 @@ using Licenta.Models;
 
 namespace ProiectColectiv.Controllers
 {
-    public class UserMapController : Controller
+    public class UserPageController : Controller
     {
         private readonly LicentaContext _context;
 
-        public UserMapController(LicentaContext context)
+        public UserPageController(LicentaContext context)
         {
             _context = context;
         }

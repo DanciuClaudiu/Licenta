@@ -26,12 +26,11 @@ namespace ProiectColectiv.Controllers
             var users = await _context.User.FirstOrDefaultAsync(m => m.Email == user.Email);
             if (users != null && users.isAdmin == true && user.Email.Equals(users.Email) && user.Password.Equals(users.Password))
             {
-                //return RedirectToAction("AdminPage", "AdminPage", users);
+                return RedirectToAction("AdminPage", "AdminPage", users);
             }
             if (users != null && user.isAdmin == false && user.Email.Equals(users.Email) && user.Password.Equals(users.Password))
             {
                 return RedirectToAction("UserPage", "UserPage", users);
-                //return View("~/Views/Home/UserPage.cshtml");
             }
 
             return View("~/Views/Home/LoginError.cshtml");
