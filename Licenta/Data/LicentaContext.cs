@@ -14,5 +14,6 @@ namespace Licenta.Models
         }
 
         public DbSet<Licenta.Models.User> User { get; set; }
+        public DbSet<Licenta.Models.Instrument> Instrument { get; set; }
     }
 }

@@ -1,6 +1,6 @@
-﻿@model Licenta.Models.User
+﻿@model Licenta.ViewModels.InstrumentsViewModel;
 @{
-    ViewData["Title"] = "User Page";
+    ViewData["Title"] = "Admin Page";
 }
 
 <!DOCTYPE html>
@@ -10,7 +10,77 @@
 </head>
 <body>
     <div>
-        admin pula
+        <input type="text" placeholder="Search.." class="search-box">
     </div>
+    <a  asp-area="" asp-controller="AddItem" asp-action="AddItem">Add</a>
+
+    <div class="admin-items-list">
+
+        @foreach (var instrument in Model.Instruments)
+        {
+            <div class="admin-item">
+                
+                <div class="admin-item-details">
+                    <div>
+                        Id: @instrument.Id
+                    </div>
+                    <div>
+                        Name: @instrument.Name
+                    </div>
+                    <div>
+                        Price: $@instrument.Price
+                    </div>
+                    <div>
+                        Quantity: @instrument.Quantity
+                    </div>
+                    <div style="margin-bottom: 3%">
+                        Type: @instrument.Type
+                    </div>
+                    <div>
+                        <input type="button" id="@instrument.Id" onclick="deleteInstrument(this.id)" value="Remove" class="item-button-remove" style="margin-bottom: 5%; " />
+                        <input type="button" value="Edit" class="item-button" style="margin-left: 10px" />
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+
+    <button onclick="topFunction()" id="up-botton" title="Go to top">Top</button>
+
+
+
+    <script>
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("up-botton").style.display = "block";
+            } else {
+                document.getElementById("up-botton").style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+
+        function deleteInstrument(id) {
+            var parameters = {
+                id: id
+        };
+        console.log(parameters);
+        $.post("@Url.Action("DeleteInstrument", "AdminPage")", parameters)
+            .done(function () {
+                console.log('post done');
+                location.reload();
+            });
+    }
+
+    </script>
+
+
 </body>
 </html>
