@@ -6,31 +6,35 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+    
 </head>
 <body>
     <div>
-        <input type="text" placeholder="Search.." class="search-box">
+        <input type="text" placeholder="Search.." class="search-box" onkeyup="searchFunction(this.value)">
     </div>
-    <a  asp-area="" asp-controller="AddItem" asp-action="AddItem">Add</a>
+    <a asp-area="" asp-controller="AddItem" asp-action="AddItem">Add</a>
 
     <div class="admin-items-list">
 
+
+
+
         @foreach (var instrument in Model.Instruments)
         {
-            <div class="admin-item">
-                
+            <div class="admin-item" id="@instrument.Name" style="display: block">
+
                 <div class="admin-item-details">
+
                     <div>
                         <label>Id: @instrument.Id</label>
                     </div>
 
                     <div>
                         <label>Name: @instrument.Name</label>
-                        <input type="text" id="updateName @instrument.Id" style="visibility: hidden"/>
-                        
+                        <input type="text" id="updateName @instrument.Id" style="visibility: hidden" />
+
                     </div>
-                    
+
                     <div>
                         <label>Price: $@instrument.Price</label>
                         <input type="text" id="updatePrice @instrument.Id" style="visibility: hidden" />
@@ -40,12 +44,12 @@
                         <label>Quantity: @instrument.Quantity</label>
                         <input type="text" id="updateQuantity @instrument.Id" style="visibility: hidden" />
                     </div>
-                    
+
                     <div style="margin-bottom: 3%">
                         <label>Type: @instrument.Type</label>
                         <input type="text" id="updateType @instrument.Id" style="visibility: hidden" />
                     </div>
-                    
+
                     <div>
                         <input type="button" id="@instrument.Id" onclick="deleteInstrument(this.id)" value="Remove" class="item-button-remove" style="margin-bottom: 5%; " />
                         <input type="button" value="Edit" id="edit @instrument.Id" onclick="reveal(this.id)" class="item-button" style="margin-left: 10px" />
@@ -59,7 +63,6 @@
     </div>
 
     <button onclick="topFunction()" id="up-botton" title="Go to top">Top</button>
-
 
 
     <script>
@@ -83,12 +86,12 @@
             var parameters = {
                 id: id
             };
-            
+
             $.post("@Url.Action("DeleteInstrument", "AdminPage")", parameters)
-            .done(function () {
-                console.log('post done');
-                location.reload();
-            });
+                .done(function () {
+                    console.log('post done');
+                    location.reload();
+                });
         }
 
 
@@ -140,13 +143,12 @@
 
         function updateInstrument(id) {
             id = id.replace(/confirm /g, '');
-            
+
             var nameId = "updateName " + id;
             var priceId = "updatePrice " + id;
             var quantityId = "updateQuantity " + id;
             var typeId = "updateType " + id;
 
-            console.log(nameId, priceId, quantityId,typeId);
 
             var name = document.getElementById(nameId).value;
             var price = document.getElementById(priceId).value;
@@ -154,7 +156,7 @@
             var type = document.getElementById(typeId).value;
 
             var parameters = {
-                id : id,
+                id: id,
                 name: name,
                 price: price,
                 quantity: quantity,
@@ -167,6 +169,19 @@
                     location.reload();
                 });
         }
+
+        function searchFunction(searchText) {
+            var itemsList = document.getElementsByClassName('admin-item');
+
+            for (var i = 0; i < itemsList.length; i++) {
+                if (!itemsList[i].id.toLowerCase().includes(searchText.toLowerCase())) {
+                    itemsList[i].style.display = "none";
+                } else {
+                    itemsList[i].style.display = "block";
+                }
+            }
+        }
+
 
     </script>
 

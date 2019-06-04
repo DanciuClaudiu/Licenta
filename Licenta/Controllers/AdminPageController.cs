@@ -49,7 +49,7 @@ namespace Licenta.Controllers
         {
             var instrument = _context.Instrument.First(s => s.Id == instrumentRequest.Id);
 
-            if (instrument == null || (string.IsNullOrEmpty(instrumentRequest.Name)))
+            if (instrument == null)
             {
                 return BadRequest();
             }
@@ -58,7 +58,7 @@ namespace Licenta.Controllers
                 instrument.Name = instrumentRequest.Name;
             if (instrumentRequest.Price != 0)
                 instrument.Price = instrumentRequest.Price;
-            if (instrumentRequest.Price != 0)
+            if (instrumentRequest.Quantity != 0)
                 instrument.Quantity = instrumentRequest.Quantity;
             if (!string.IsNullOrEmpty(instrumentRequest.Type))
                 instrument.Type = instrumentRequest.Type;

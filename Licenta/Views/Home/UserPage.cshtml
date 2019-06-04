@@ -1,4 +1,4 @@
-﻿@model Licenta.Models.User
+﻿@model Licenta.ViewModels.InstrumentsViewModel;
 @{
     ViewData["Title"] = "User Page";
 }
@@ -10,7 +10,73 @@
 </head>
 <body>
     <div>
-        user pula
+        <input type="text" placeholder="Search.." class="search-box" onkeyup="searchFunction(this.value)">
     </div>
-</body>
-</html>
+    <div class="admin-items-list">
+
+        @foreach (var instrument in Model.Instruments)
+        {
+            <div class="admin-item" id="@instrument.Name" style="display: block">
+
+                <div class="admin-item-details">
+
+                    <div>
+                        <label>@instrument.Name</label>
+
+
+                    </div>
+
+                    <div style="margin-bottom: 3%">
+                        <label>$@instrument.Price</label>
+                    </div>
+
+                    <input type="button" id="@instrument.Id" onclick="buyItem(this.id)" value="Add to Cart" class="item-button" style="margin-bottom: 5%;" />
+
+
+                </div>
+
+
+
+            </div>
+        }
+    </div>
+
+    <button onclick="topFunction()" id="up-botton" title="Go to top">Top</button>
+
+
+
+
+    <script>
+        window.onscroll = function () { scrollFunction() };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("up-botton").style.display = "block";
+            } else {
+                document.getElementById("up-botton").style.display = "none";
+            }
+        }
+
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+
+
+        function searchFunction(searchText) {
+            var itemsList = document.getElementsByClassName('admin-item');
+
+            for (var i = 0; i < itemsList.length; i++) {
+                if (!itemsList[i].id.toLowerCase().includes(searchText.toLowerCase())) {
+                    itemsList[i].style.display = "none";
+                } else {
+                    itemsList[i].style.display = "block";
+                }
+            }
+        }
+
+    </script>
+
+
+</body >
+</html >

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Licenta.Models;
+using Licenta.ViewModels;
 
 namespace ProiectColectiv.Controllers
 {
@@ -15,13 +16,16 @@ namespace ProiectColectiv.Controllers
         // GET
         public ActionResult UserPage(User user)
         {
-            return View("~/Views/Home/UserPage.cshtml");
+            var instruments = _context.Instrument;
+            var model = new InstrumentsViewModel
+            {
+                User = user,
+                Instruments = instruments
+            };
+
+            return View("~/Views/Home/UserPage.cshtml", model);
         }
-        [HttpPost]
-        public void BookingNormal(int? id)
-        {
-           
-        }
+ 
 
     }
 }
